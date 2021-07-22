@@ -17,7 +17,7 @@ public class UserDAO {
                 id = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());;
         }
         return id;
     }
@@ -39,6 +39,17 @@ public class UserDAO {
         }
 
         return usersList;
+    }
+
+    public static int delete(Connection conn, long id) {
+        int result = 0;
+        String query = "DELETE FROM users WHERE id = " + id;
+        try (PreparedStatement statement = conn.prepareStatement(query)) {
+            result = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public void deleteAll() {

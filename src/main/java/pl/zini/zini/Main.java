@@ -9,11 +9,11 @@ public class Main {
     public static LinkedList<User> usersList = new LinkedList();
 
     public static void main(String[] args) {
-        UserDAO.findAll();
-        while(true){
+        usersList = UserDAO.findAll();
+        while (true) {
             showOptions();
             String option = scanner.nextLine();
-            if(option.equalsIgnoreCase("q")){
+            if (option.equalsIgnoreCase("q")) {
                 break;
             }
             switch (option.toLowerCase()) {
@@ -43,18 +43,40 @@ public class Main {
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
-        User user = new User(email, username,password);
-        System.out.println(user.getId() + " " + user.getEmail() + " " + user.getUserName() + user.getPassword());
+        User user = new User(email, username, password);
+        System.out.println(user.getId() + " | " + user.getEmail() +
+                " | " + user.getUserName() + " | " + user.getPassword());
         System.out.println(username + " created");
         usersList.add(user);
     }
 
     public static void removeUser() {
+        System.out.print("Enter user id: ");
+        long id = scanner.nextLong();
+        String tmpUserName = usersList.get((int) id).getUserName();
+        User.deleteUser(id);
+        System.out.println(tmpUserName + " removed");
+    }
 
+    public static User chooseUser() {
+
+        User userSearched = null;
+        System.out.print("Enter user id: ");
+        long id = scanner.nextLong();
+        for (User user : usersList) {
+            if (user.getId() == id) {
+                userSearched = user;
+            } else {
+                return null;
+            }
+        }
+        return userSearched;
     }
 
     public static void displayUser() {
-
+        User user = chooseUser();
+        System.out.println(user.getId() + " | " + user.getEmail() +
+                " | " + user.getUserName() + " | " + user.getPassword());
     }
 
     public static void printAllUsers() {

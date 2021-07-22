@@ -1,5 +1,7 @@
 package pl.zini.zini;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.sql.SQLException;
 
 public class User {
@@ -19,13 +21,21 @@ public class User {
         this.email = email;
         this.userName = username;
         this.password = setPassword(password);
-        String query = "INSERT INTO users(email, username, password) VALUES ('"+email+"', '"+ username +"', '" +password +"' );";
+        String query = "INSERT INTO users(email, username, password) VALUES ('"+email+"', '"+ username +"', '" +this.password +"' );";
         try {
             this.id = UserDAO.insert(DbUtil.connect(),query);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
 
+    public static void deleteUser(long id) {
+        try {
+            UserDAO.delete(DbUtil.connect(),id);
+        } catch (SQLException throwables) {
+            System.out.println(throwables.getMessage());
+        }
+        System.out.println();
     }
 
     public long getId() {
@@ -57,7 +67,9 @@ public class User {
     }
 
     public String setPassword(String password) {
-        String hashPassword = null;
-        return hashPassword;
+        String salt = BCrypt.gensalt();
+        return BCrypt.hashpw(password, salt);
     }
+
+
 }
