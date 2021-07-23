@@ -18,7 +18,6 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            ;
         }
         return id;
     }
@@ -63,9 +62,5 @@ public class UserDAO {
             System.out.println(e.getMessage());
         }
         return id;
-    }
-
-    public void deleteAll() {
-
     }
 }

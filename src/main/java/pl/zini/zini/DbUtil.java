@@ -15,7 +15,6 @@ public class DbUtil {
     }
 
     public static void printData(Connection conn, String query, String... columnNames) throws SQLException {
-
         try (PreparedStatement statement = conn.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery();) {
             while (resultSet.next()) {

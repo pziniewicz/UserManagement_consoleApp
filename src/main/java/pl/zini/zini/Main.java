@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
     public static LinkedList<User> usersList = new LinkedList();
 
     public static void main(String[] args) {
@@ -24,7 +24,6 @@ public class Main {
                 case "d" -> displayUser();
                 case "e" -> editUser();
                 case "p" -> printAllUsers();
-                // default -> System.out.println("invalid option chosen");
             }
         }
     }
@@ -69,12 +68,9 @@ public class Main {
                     System.out.println("No such user");
                 }
                 break;
-            } else {
-                continue;
             }
         }
     }
-
 
     public static long displayUser() {
         long id = 0;
@@ -106,7 +102,7 @@ public class Main {
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
-        User.updateUser(id,email, username, password);
+        User.updateUser(id, email, username, password);
     }
 
     public static void printAllUsers() {
