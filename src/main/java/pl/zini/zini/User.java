@@ -29,13 +29,22 @@ public class User {
         }
     }
 
-    public static void deleteUser(long id) {
+    public static int deleteUser(long id) {
+        int result = 0;
         try {
-            UserDAO.delete(DbUtil.connect(),id);
+            result = UserDAO.delete(DbUtil.connect(), id);
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
         }
-        System.out.println();
+        return result;
+    }
+    public static void updateUser(long id, String email, String username, String password) {
+        String query = "UPDATE users SET email = '"+email+"', username ='"+ username +"', password ='" + setPassword(password) +"' WHERE id = '" + id + "' ;";
+        try {
+            UserDAO.update(DbUtil.connect(),query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public long getId() {
@@ -66,10 +75,8 @@ public class User {
         return password;
     }
 
-    public String setPassword(String password) {
+    public static String setPassword(String password) {
         String salt = BCrypt.gensalt();
         return BCrypt.hashpw(password, salt);
     }
-
-
 }

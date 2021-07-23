@@ -11,10 +11,8 @@ public class DbUtil {
     private final static String DB_PASS = System.getenv("DBPASS");
 
     public static Connection connect() throws SQLException {
-        return DriverManager.getConnection(DB_URL+DB_NAME+DB_PARAM, DB_USER, DB_PASS);
+        return DriverManager.getConnection(DB_URL + DB_NAME + DB_PARAM, DB_USER, DB_PASS);
     }
-
-
 
     public static void printData(Connection conn, String query, String... columnNames) throws SQLException {
 

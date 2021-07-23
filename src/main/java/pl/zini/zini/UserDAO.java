@@ -17,7 +17,8 @@ public class UserDAO {
                 id = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
+            ;
         }
         return id;
     }
@@ -32,12 +33,11 @@ public class UserDAO {
                 String email = resultSet.getString(2);
                 String username = resultSet.getString(3);
                 String password = resultSet.getString(4);
-                usersList.add(new User(id,email,username,password ));
+                usersList.add(new User(id, email, username, password));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return usersList;
     }
 
@@ -52,9 +52,20 @@ public class UserDAO {
         return result;
     }
 
+    public static long update(Connection conn, String query, String... params) {
+        long id = 0;
+        try (PreparedStatement statement = conn.prepareStatement(query)) {
+            for (int i = 0; i < params.length; i++) {
+                statement.setString(i + 1, params[i]);
+            }
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
+
     public void deleteAll() {
 
     }
-
-
 }

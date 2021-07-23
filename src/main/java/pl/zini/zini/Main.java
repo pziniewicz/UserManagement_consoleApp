@@ -1,5 +1,7 @@
 package pl.zini.zini;
 
+import com.mysql.cj.util.StringUtils;
+
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -20,8 +22,9 @@ public class Main {
                 case "c" -> createUser();
                 case "r" -> removeUser();
                 case "d" -> displayUser();
+                case "e" -> editUser();
                 case "p" -> printAllUsers();
-                default -> System.out.println("invalid option chosen");
+                // default -> System.out.println("invalid option chosen");
             }
         }
     }
@@ -30,6 +33,7 @@ public class Main {
         System.out.println("(c)reate user");
         System.out.println("(r)emove user");
         System.out.println("(d)isplay user");
+        System.out.println("(e)dit user");
         System.out.println("(p)rint all users");
         System.out.println("(q)uit");
         System.out.print("Enter option --> ");
@@ -51,32 +55,58 @@ public class Main {
     }
 
     public static void removeUser() {
-        System.out.print("Enter user id: ");
-        long id = scanner.nextLong();
-        String tmpUserName = usersList.get((int) id).getUserName();
-        User.deleteUser(id);
-        System.out.println(tmpUserName + " removed");
-    }
-
-    public static User chooseUser() {
-
-        User userSearched = null;
-        System.out.print("Enter user id: ");
-        long id = scanner.nextLong();
-        for (User user : usersList) {
-            if (user.getId() == id) {
-                userSearched = user;
+        while (true) {
+            System.out.print("Enter user id: ");
+            String option = scanner.nextLine();
+            if (option.equalsIgnoreCase("q")) {
+                break;
+            } else if (StringUtils.isStrictlyNumeric(option)) {
+                long id = Long.parseLong(option);
+                int deleted = User.deleteUser(id);
+                if (deleted > 0) {
+                    System.out.println("User deleted.");
+                } else {
+                    System.out.println("No such user");
+                }
+                break;
             } else {
-                return null;
+                continue;
             }
         }
-        return userSearched;
     }
 
-    public static void displayUser() {
-        User user = chooseUser();
-        System.out.println(user.getId() + " | " + user.getEmail() +
-                " | " + user.getUserName() + " | " + user.getPassword());
+
+    public static long displayUser() {
+        long id = 0;
+        while (true) {
+            System.out.print("Enter user id: ");
+            String option = scanner.nextLine();
+            if (option.equalsIgnoreCase("q")) {
+                break;
+            } else if (StringUtils.isStrictlyNumeric(option)) {
+                id = Long.parseLong(option);
+                for (User user : usersList) {
+                    if (user.getId() == id) {
+                        System.out.println(user.getId() + " | " + user.getEmail() +
+                                " | " + user.getUserName() + " | " + user.getPassword());
+                    }
+                }
+                break;
+            }
+        }
+        return id;
+    }
+
+    public static void editUser() {
+        long id = displayUser();
+        System.out.println("Edit User");
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+        User.updateUser(id,email, username, password);
     }
 
     public static void printAllUsers() {
